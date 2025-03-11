@@ -17,5 +17,13 @@ import albumentations as A
 import kagglehub
 from pathlib import Path
 
-# Download latest version
-path = kagglehub.dataset_download("paultimothymooney/chest-xray-pneumonia")
+def read_link (link):
+    return 'https://drive.google.com/uc?export=download&id='+link.split('/')[-2]
+riasec_df = pd.read_csv(read_link('https://drive.google.com/file/d/1Yw8Q-okC156xESWz9ZdYJY8kOZpl3SjR/view?usp=sharing'))
+riasec_df = pd.concat([riasec_df, # Realistic
+                      pd.read_csv(read_link('https://drive.google.com/file/d/1fTj0tFJtQ4htBEa1dpLVjhWe93PYOHA1/view?usp=sharing')), # Investigative
+                      pd.read_csv(read_link('https://drive.google.com/file/d/1CR2IHnrhKC-7EtUjP5s-x8nkie6zSfiZ/view?usp=sharing')), # Artistic
+                      pd.read_csv(read_link('https://drive.google.com/file/d/1Me5geVIjvEtMPldfzMOwBWavJDjy-e0c/view?usp=sharing')), # Social
+                      pd.read_csv(read_link('https://drive.google.com/file/d/1WOTNJ7htmu5jR3gvaCPNLKg0ca1p3jaR/view?usp=sharing')), # Enterprising
+                      pd.read_csv(read_link('https://drive.google.com/file/d/1crJJh-svX5jGfVgs3oZlciEWJas_YYPY/view?usp=sharing')) # Conventional
+                      ])
