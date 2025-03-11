@@ -30,4 +30,3 @@ riasec = pd.concat(
     )
 
 occupations = pd.read_csv(read_link('https://drive.google.com/file/d/1GAURhgjxXMGdlFs2Gk4jaByoSPPPkdPy/view?usp=sharing'))
-occupations
