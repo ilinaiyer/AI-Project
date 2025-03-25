@@ -7,6 +7,13 @@ from sklearn.model_selection import train_test_split
 import torch
 import torch.nn as nn
 import torch.optim as optim
+
+import tensorflow as tf
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, GlobalAveragePooling2D
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras import models, layers
+
 class SimpleClassifier(nn.Module):
     def __init__(self, n_features, n_classes):
         super(SimpleClassifier, self).__init__()
@@ -25,6 +32,7 @@ def columnToList(column_name):
     for i in range(len(df.loc[:, column_name])):
         arr.append((df.loc[:, column_name][i]))
     return arr
+print("hi")
 df = pd.read_csv("Data_final.csv")
 O = columnToList("O_score")
 C = columnToList("C_score")
@@ -48,7 +56,19 @@ X_test = torch.tensor(X_test).float()
 y_train = torch.tensor(y_train).long()
 y_test = torch.tensor(y_test).long()
 torch.manual_seed(0)
-model = SimpleClassifier(x.shape[1], len(le.classes_)).float()
+model = models.Sequential([
+    layers.Input(shape=(256,256,3)),
+
+    layers.Conv2D(32, (3,3), activation='relu'),
+    layers.MaxPooling2D((2,2)),
+
+    #layers.Conv2D(64, (3,2), activation='relu'),
+    #layers.MaxPooling2D((2,2)),
+
+    layers.Flatten(),
+    layers.Dense(128, activation='relu'),
+    layers.Dense(1, activation='sigmoid')
+])
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=0.1)
 train_loss = []
