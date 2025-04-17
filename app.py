@@ -22,7 +22,7 @@ import numpy as np
 #!mkdir -p streamlit_app
 
 # Create a Streamlit app file
-%%writefile streamlit_app/app.py
+#%%writefile streamlit_app/app.py
 
 class SimpleClassifier(nn.Module):
     def __init__(self, n_features, n_classes):
