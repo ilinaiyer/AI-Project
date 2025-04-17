@@ -19,7 +19,7 @@ import numpy as np
 # ----- SECTION 2: CREATE THE STREAMLIT APP -----
 
 # Create a directory for the Streamlit app
-!mkdir -p streamlit_app
+#!mkdir -p streamlit_app
 
 # Create a Streamlit app file
 %%writefile streamlit_app/app.py
