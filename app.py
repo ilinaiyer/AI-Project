@@ -1,7 +1,7 @@
 # Part 1: Building and Deploying a Simple ML Model with Streamlit in Colab
 
 # Install necessary packages
-!pip install streamlit scikit-learn pandas numpy pyngrok
+
 
 # Import libraries
 import pandas as pd
