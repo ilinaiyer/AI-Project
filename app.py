@@ -8,7 +8,6 @@ import pandas as pd
 import numpy as np
 import pickle
 import streamlit as st
-from pyngrok import ngrok
 import os
 import pickle
 import torch
