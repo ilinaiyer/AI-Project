@@ -106,3 +106,9 @@ plt.xlabel("Epochs")
 plt.ylabel("Accuracy")
 plt.legend()
 plt.show()
+
+# Save the model
+with open('job_model.pkl', 'wb') as f:
+    pickle.dump(model, f)
+
+print("Model saved as 'job_model.pkl'")
