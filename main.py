@@ -8,6 +8,7 @@ from sklearn.model_selection import train_test_split
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import pickle
 class SimpleClassifier(nn.Module):
    def __init__(self, n_features, n_classes):
        super(SimpleClassifier, self).__init__()
