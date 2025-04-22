@@ -1,8 +1,3 @@
-# Part 1: Building and Deploying a Simple ML Model with Streamlit in Colab
-
-# Install necessary packages
-
-# Create a Streamlit app file
 %%writefile streamlit_app/app.py
 # Import libraries
 import pandas as pd
