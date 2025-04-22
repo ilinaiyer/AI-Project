@@ -1,4 +1,4 @@
-%%writefile streamlit_app/app.py
+#%%writefile streamlit_app/app.py
 # Import libraries
 import pandas as pd
 import numpy as np
