@@ -2,7 +2,8 @@
 
 # Install necessary packages
 
-
+# Create a Streamlit app file
+%%writefile streamlit_app/app.py
 # Import libraries
 import pandas as pd
 import numpy as np
@@ -20,8 +21,7 @@ import numpy as np
 # Create a directory for the Streamlit app
 #!mkdir -p streamlit_app
 
-# Create a Streamlit app file
-%%writefile streamlit_app/app.py
+
 
 class SimpleClassifier(nn.Module):
     def __init__(self, n_features, n_classes):
