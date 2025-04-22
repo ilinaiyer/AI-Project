@@ -21,7 +21,7 @@ import numpy as np
 #!mkdir -p streamlit_app
 
 # Create a Streamlit app file
-#%%writefile streamlit_app/app.py
+%%writefile streamlit_app/app.py
 
 class SimpleClassifier(nn.Module):
     def __init__(self, n_features, n_classes):
@@ -111,5 +111,5 @@ import os
 
 !pip install -q streamlit
 !npm install localtunnel
-!wget -q -O - ipv4.icanhazip.com # USE THIS OUTPUT (ex., '34.133.84.111') as the Tunnel Password if you are asked on the next page
+#!wget -q -O - ipv4.icanhazip.com # USE THIS OUTPUT (ex., '34.133.84.111') as the Tunnel Password if you are asked on the next page
 !streamlit run streamlit_app/app.py & npx localtunnel --port 8501
