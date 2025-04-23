@@ -1,4 +1,5 @@
 #%%writefile streamlit_app/app.py
+
 # Import libraries
 import pandas as pd
 import numpy as np
@@ -15,7 +16,7 @@ import numpy as np
 
 # Create a directory for the Streamlit app
 #!mkdir -p streamlit_app
-
+# use "python -m streamlit run app.py" if streamlit not running through terminal
 
 
 class SimpleClassifier(nn.Module):
