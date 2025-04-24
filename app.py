@@ -52,16 +52,18 @@ input_list = ['Database Fundamentals','Computer Architecture','Distributed Compu
               'Emotional_Range','Conversation','Openness to Change','Hedonism','Self-enhancement','Self-transcendence','Role']
 
 # Set up the Streamlit page
-st.title('NOT Iris Flower Classification')
-st.write('This app predicts NOT the Iris flower type based on the sepal and petal measurements.')
+st.title('Computer Science Job Predictor')
+st.write('This app recommends a CS job based on your computer skills and personality.')
 
 # Create input sliders for the features
-st.sidebar.header('User Input Parameters')
+st.sidebar.header('Computer Science Skills')
 
 def user_input_features():
     thing = []
     data = {}
     for i in range(len(input_list) - 1):
+        if i == 17:
+            st.sidebar.header('Personality Scores')
         if i < 17:
             thing.append(st.sidebar.slider(input_list[i], 0.0, 1.0, 0.5))
         else:
@@ -83,7 +85,7 @@ prediction = target_names[prediction_highval]
 
 # Display the prediction
 st.subheader('Prediction:')
-st.write(f'The model predicts: **{prediction}**')
+st.write(f'Your future job: **{prediction}**')
 
 # Display prediction probabilities
 st.subheader('Prediction Probability:')
