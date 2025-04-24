@@ -65,9 +65,9 @@ def user_input_features():
         if i == 17:
             st.sidebar.header('Personality Scores')
         if i < 17:
-            thing.append(st.sidebar.slider(input_list[i], 0.0, 1.0, 0.5))
-        else:
             thing.append(st.sidebar.slider(input_list[i], 0.0, 6.0, 3.0))
+        else:
+            thing.append(st.sidebar.slider(input_list[i], 0.0, 1.0, 0.5))
         data[input_list[i]] = thing[i]
 
     features = pd.DataFrame(data, index=[0])
