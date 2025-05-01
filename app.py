@@ -51,9 +51,46 @@ input_list = ['Database Fundamentals','Computer Architecture','Distributed Compu
               'Troubleshooting skills','Graphics Designing','Openness','Conscientousness','Extraversion','Agreeableness',
               'Emotional_Range','Conversation','Openness to Change','Hedonism','Self-enhancement','Self-transcendence','Role']
 
+
 # Set up the Streamlit page
+st.markdown("""
+    <style>
+    .main {
+        background-color: #f8f9fa;
+    }
+    .sidebar .sidebar-content {
+        background-color: #e9ecef;
+    }
+    .stSlider {
+        color: #0d6efd;
+    }
+    .st-b7 {
+        color: #212529;
+    }
+    .st-bb {
+        background-color: #ffffff;
+    }
+    .job-card {
+        border-radius: 10px;
+        padding: 20px;
+        margin: 10px 0;
+        background-color: #ffffff;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        border-left: 5px solid #0d6efd;
+    }
+    .prediction-header {
+        color: #0d6efd;
+    }
+    .skill-header {
+        color: #495057;
+        font-weight: 600;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
 st.title('Computer Science Job Predictor')
 st.write('This app recommends a CS job based on your computer skills and personality.')
+
 
 # Create input sliders for the features
 st.sidebar.header('Computer Science Skills')
@@ -61,6 +98,7 @@ st.sidebar.header('Computer Science Skills')
 def user_input_features():
     thing = []
     data = {}
+
     for i in range(len(input_list) - 1):
         if i == 17:
             st.sidebar.header('Personality Scores')
@@ -77,11 +115,13 @@ def user_input_features():
 user_input = user_input_features()
 st.subheader('User Input:')
 st.write(user_input)
+st.markdown("Based on your inputs, here are the results:")
 
 # Make prediction
-prediction_proba = model.forward(torch.tensor(user_input.values.astype(np.float32)))
-prediction_highval = torch.argmax(prediction_proba)
-prediction = target_names[prediction_highval]
+with st.spinner('Analyzing your profile...'):
+    prediction_proba = model.forward(torch.tensor(user_input.values.astype(np.float32)))
+    prediction_highval = torch.argmax(prediction_proba)
+    prediction = target_names[prediction_highval]
 
 # Display the prediction
 st.subheader('Prediction:')
