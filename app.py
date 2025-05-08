@@ -68,7 +68,7 @@ def user_input_features():
             thing.append(st.sidebar.select_slider(input_list[i], options=[0,1,2,3,4,5,6], value=3))
         else:
             thing.append(st.sidebar.slider(input_list[i], 0.0, 1.0, 0.5))
-        data[input_list[i]] = thing[i]
+        data[input_list[i]] = thing[i]   
 
     features = pd.DataFrame(data, index=[0])
     return features
@@ -81,11 +81,18 @@ st.write(user_input)
 # Make prediction
 prediction_proba = model.forward(torch.tensor(user_input.values.astype(np.float32)))
 prediction_highval = torch.argmax(prediction_proba)
+other_preds_val = torch.topk(prediction_proba,4)
 prediction = target_names[prediction_highval]
+other_preds = []
+for i in other_preds_val[1]:
+    other_preds.append(target_names[i])
 
 # Display the prediction
 st.subheader('Prediction:')
 st.write(f'Your future job: **{prediction}**')
+st.write(f'Other recommendations:')
+for i in other_preds:
+    st.write(f' - **{i}**')
 
 # Display prediction probabilities
 st.subheader('Prediction Probability:')
