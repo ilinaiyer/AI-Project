@@ -124,7 +124,7 @@ with st.spinner('Analyzing your profile...'):
     other_preds_val = torch.topk(prediction_proba,4)
     prediction = target_names[prediction_highval]
     other_preds = []
-    for i in other_preds_val[1]:
+    for i in other_preds_val.indices:
         other_preds.append(target_names[i])
 
 # Display the prediction
