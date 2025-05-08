@@ -122,16 +122,11 @@ with st.spinner('Analyzing your profile...'):
     prediction_proba = model.forward(torch.tensor(user_input.values.astype(np.float32)))
     prediction_highval = torch.argmax(prediction_proba)
     prediction = target_names[prediction_highval]
-#other_preds_val = torch.topk(prediction_proba,4,largest=True)
-#other_preds = []
-#for i in other_preds_val.indices:
 
 # Display the prediction
 st.subheader('Prediction:')
 st.write(f'Your future job: **{prediction}**')
-#st.write(f'Other recommendations:')
-#for i in other_preds:
-#    st.write(f' - **{i}**')
+
 
 # Display prediction probabilities
 st.subheader('Prediction Probability:')
