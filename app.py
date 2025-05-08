@@ -118,10 +118,11 @@ st.write(user_input)
 st.markdown("Based on your inputs, here are the results:")
 
 # Make prediction
-with st.spinner('Analyzing your profile...'):
-    prediction_proba = model.forward(torch.tensor(user_input.values.astype(np.float32)))
-    prediction_highval = torch.argmax(prediction_proba)
-    prediction = target_names[prediction_highval]
+#with st.spinner('Analyzing your profile...'):
+prediction_proba = model.forward(torch.tensor(user_input.values.astype(np.float32)))
+prediction_highval = torch.argmax(prediction_proba)
+st.write(f'Your future job: **{prediction_highval}**')
+prediction = target_names[prediction_highval]
 
 # Display the prediction
 st.subheader('Prediction:')
