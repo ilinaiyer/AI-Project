@@ -1,15 +1,14 @@
+#%%writefile streamlit_app/app.py
+
 # ask whether to take a personality quiz or to manually insert all scores
 # if personality quiz, go to quiz.py
 # if manually insert, go to app.py
-#%%writefile streamlit_app/app.py
 
 # Import libraries
 import pandas as pd
 import numpy as np
-import pickle
 import streamlit as st
 import os
-import pickle
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -58,6 +57,17 @@ st.markdown("""
 
 st.title('Computer Science Job Predictor')
 st.write('This app recommends a CS job based on your computer skills and personality.')
+
+st.sidebar.success("Select a page above.")
+
+if "my_input" not in st.session_state:
+    st.session_state["my_input"] = ""
+
+my_input = st.text_input("Input a text here", st.session_state["my_input"])
+submit = st.button("Submit")
+if submit:
+    st.session_state["my_input"] = my_input
+    st.write("You have entered: ", my_input)
 
 # Add a sample image based on prediction
 #st.subheader('Iris Type:')
