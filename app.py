@@ -16,7 +16,28 @@ import torch.optim as optim
 import numpy as np
 from streamlit_option_menu import option_menu
 
+class SimpleClassifier(nn.Module):
+   def __init__(self, n_features, n_classes):
+       super(SimpleClassifier, self).__init__()
+       self.fc1 = nn.Linear(n_features, 128)  # First fully connected layer
+       self.bn1 = nn.BatchNorm1d(128)
+       self.fc2 = nn.Linear(128, 64)         # Second fully connected layer
+       self.bn2 = nn.BatchNorm1d(64)
+       self.fc3 = nn.Linear(64, n_classes)   # Output layer
+       self.relu = nn.ReLU()                  # Activation function
+       self.dropout = nn.Dropout(0.3)
+
+
+   def forward(self, x):
+       x = self.bn1(self.relu(self.fc1(x)))
+       x = self.dropout(x)
+       x = self.bn2(self.relu(self.fc2(x)))
+       x = self.fc3(x)  # No activation function here, as we'll use CrossEntropyLoss
+       return x
+   
 import manual
+
+
 
 # ----- SECTION 2: CREATE THE STREAMLIT APP -----
 
