@@ -14,20 +14,10 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import numpy as np
+from streamlit_option_menu import option_menu
 
-class SimpleClassifier(nn.Module):
-    def __init__(self, n_features, n_classes):
-        super(SimpleClassifier, self).__init__()
-        self.fc1 = nn.Linear(n_features, 128)  # First fully connected layer
-        self.fc2 = nn.Linear(128, 64)         # Second fully connected layer
-        self.fc3 = nn.Linear(64, n_classes)   # Output layer
-        self.relu = nn.ReLU()                  # Activation function
+import manual
 
-    def forward(self, x):
-        x = self.relu(self.fc1(x))
-        x = self.relu(self.fc2(x))
-        x = self.fc3(x)  # No activation function here, as we'll use CrossEntropyLoss
-        return x
 # ----- SECTION 2: CREATE THE STREAMLIT APP -----
 
 # Create a directory for the Streamlit app
@@ -74,14 +64,36 @@ st.write('This app recommends a CS job based on your computer skills and persona
 
 st.sidebar.success("Select a page above.")
 
-if "my_input" not in st.session_state:
-    st.session_state["my_input"] = ""
+class MultiApp:
 
-my_input = st.text_input("Input a text here", st.session_state["my_input"])
-submit = st.button("Submit")
-if submit:
-    st.session_state["my_input"] = my_input
-    st.write("You have entered: ", my_input)
+    def __init__(self):
+        self.apps = []
+
+    def add_app(self, title, func):
+
+        self.apps.append({
+            "title": title,
+            "function": func
+        })
+
+    def run():
+        # app = st.sidebar(
+        with st.sidebar:        
+            app = option_menu(
+                menu_title='Pondering ',
+                options=['Manual'],
+                icons=['house-fill'],
+                menu_icon='chat-text-fill',
+                default_index=1,
+                )
+
+        
+        if app == "Home":
+            home.app()
+             
+          
+             
+    run()            
 
 # Add a sample image based on prediction
 #st.subheader('Iris Type:')
