@@ -80,11 +80,6 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-st.title('Computer Science Job Predictor')
-st.write('This app recommends a CS job based on your computer skills and personality.')
-
-st.sidebar.success("Select a page above.")
-
 class MultiApp:
 
     def __init__(self):
