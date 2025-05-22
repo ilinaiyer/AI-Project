@@ -106,7 +106,7 @@ def app():
         st.subheader('User Input:')
         st.write(user_input2)
     with col3:
-        data=data1+data2
+        data = np.concatenate((data1,data2))
         user_input = pd.DataFrame(data, index=[0])
         # Make prediction
         #with st.spinner('Analyzing your profile...'):
