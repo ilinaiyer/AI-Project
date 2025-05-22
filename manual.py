@@ -95,9 +95,9 @@ def app():
             thing = []
             data = {}
 
-            for i in range(17,len(input_list) - 1):
+            for i in range(17,len(input_list)-1):
                 thing.append(st.slider(input_list[i], 0.0, 1.0, 0.5))
-                data[input_list[i]] = thing[i]
+                data[input_list[i]] = thing[i-17]
 
             features = pd.DataFrame(data, index=[0])
             return features
