@@ -70,42 +70,44 @@ def app():
 
 
     # Create input sliders for the features
-    st.sidebar.header('Computer Science Skills')
+    col1, col2 = st.columns(2)
+    with col1:
+        st.header('Computer Science Skills')
 
-    def user_input_features():
-        thing = []
-        data = {}
+        def user_input_features():
+            thing = []
+            data = {}
 
-        for i in range(len(input_list) - 1):
-            if i == 17:
-                st.sidebar.header('Personality Scores')
-            if i < 17:
-                thing.append(st.sidebar.select_slider(input_list[i], options=[0,1,2,3,4,5,6], value=3))
-            else:
-                thing.append(st.sidebar.slider(input_list[i], 0.0, 1.0, 0.5))
-            data[input_list[i]] = thing[i]
+            for i in range(len(input_list) - 1):
+                if i == 17:
+                    st.header('Personality Scores')
+                if i < 17:
+                    thing.append(st.sidebar.select_slider(input_list[i], options=[0,1,2,3,4,5,6], value=3))
+                else:
+                    thing.append(st.sidebar.slider(input_list[i], 0.0, 1.0, 0.5))
+                data[input_list[i]] = thing[i]
 
-        features = pd.DataFrame(data, index=[0])
-        return features
+            features = pd.DataFrame(data, index=[0])
+            return features
+    with col2:
+        # Display the user input
+        user_input = user_input_features()
+        st.subheader('User Input:')
+        st.write(user_input)
+        st.markdown("Based on your inputs, here are the results:")
 
-    # Display the user input
-    user_input = user_input_features()
-    st.subheader('User Input:')
-    st.write(user_input)
-    st.markdown("Based on your inputs, here are the results:")
+        # Make prediction
+        #with st.spinner('Analyzing your profile...'):
+        prediction_proba = model.forward(torch.tensor(user_input.values.astype(np.float32)))
+        prediction_highval = torch.argmax(prediction_proba)
+        prediction = target_names[prediction_highval]
 
-    # Make prediction
-    #with st.spinner('Analyzing your profile...'):
-    prediction_proba = model.forward(torch.tensor(user_input.values.astype(np.float32)))
-    prediction_highval = torch.argmax(prediction_proba)
-    prediction = target_names[prediction_highval]
+        # Display the prediction
+        # LINE 128
+        st.subheader('Prediction:')
+        st.write(f'Your future job: **{prediction}**')
 
-    # Display the prediction
-    # LINE 128
-    st.subheader('Prediction:')
-    st.write(f'Your future job: **{prediction}**')
-
-    # Display prediction probabilities
-    st.subheader('Prediction Probability:')
-    prob_df = pd.DataFrame(prediction_proba.detach().numpy(), columns=target_names)
-    st.write(prob_df)
+        # Display prediction probabilities
+        st.subheader('Prediction Probability:')
+        prob_df = pd.DataFrame(prediction_proba.detach().numpy(), columns=target_names)
+        st.write(prob_df)
