@@ -70,7 +70,7 @@ def app():
 
 
     # Create input sliders for the features
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
     with col1:
         st.header('Computer Science Skills')
 
@@ -78,24 +78,35 @@ def app():
             thing = []
             data = {}
 
-            for i in range(len(input_list) - 1):
-                if i == 17:
-                    st.header('Personality Scores')
-                if i < 17:
-                    thing.append(st.select_slider(input_list[i], options=[0,1,2,3,4,5,6], value=3))
-                else:
-                    thing.append(st.slider(input_list[i], 0.0, 1.0, 0.5))
+            for i in range(17):
+                thing.append(st.select_slider(input_list[i], options=[0,1,2,3,4,5,6], value=3))
                 data[input_list[i]] = thing[i]
 
             features = pd.DataFrame(data, index=[0])
             return features
         # Display the user input
-        user_input = user_input_features()
+        user_input1 = user_input_features()
         st.subheader('User Input:')
-        st.write(user_input)
+        st.write(user_input1)
     with col2:
-        st.markdown("Based on your inputs, here are the results:")
+        st.header('Personality Scores')
 
+        def user_input_features():
+            thing = []
+            data = {}
+
+            for i in range(17,len(input_list) - 1):
+                thing.append(st.slider(input_list[i], 0.0, 1.0, 0.5))
+                data[input_list[i]] = thing[i]
+
+            features = pd.DataFrame(data, index=[0])
+            return features
+        # Display the user input
+        user_input2 = user_input_features()
+        st.subheader('User Input:')
+        st.write(user_input2)
+    with col3:
+        user_input = user_input1 + user_input1
         # Make prediction
         #with st.spinner('Analyzing your profile...'):
         prediction_proba = model.forward(torch.tensor(user_input.values.astype(np.float32)))
