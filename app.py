@@ -35,7 +35,7 @@ class SimpleClassifier(nn.Module):
        x = self.fc3(x)  # No activation function here, as we'll use CrossEntropyLoss
        return x
    
-import manual
+import home,manual,quiz
 
 
 
@@ -102,14 +102,17 @@ class MultiApp:
         with st.sidebar:        
             app = option_menu(
                 menu_title='Menu',
-                options=['Manual'],
-                icons=['house-fill'],
+                options=['Home','Manual','Quiz'],
+                icons=['house-fill','house-fill','house-fill'],
                 menu_icon='chat-text-fill',
                 default_index=0,
                 )
-
+        if app == "Home":
+            home.app()
         if app == "Manual":
             manual.app()
+        if app == "Quiz":
+            quiz.app()
              
     run()            
 
