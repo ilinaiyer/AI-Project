@@ -17,137 +17,124 @@ import numpy as np
 #!mkdir -p streamlit_app
 # use "python -m streamlit run app.py" if streamlit not running through terminal
 
+def app():
 
-class SimpleClassifier(nn.Module):
-    def __init__(self, n_features, n_classes):
-        super(SimpleClassifier, self).__init__()
-        self.fc1 = nn.Linear(n_features, 128)  # First fully connected layer
-        self.fc2 = nn.Linear(128, 64)         # Second fully connected layer
-        self.fc3 = nn.Linear(64, n_classes)   # Output layer
-        self.relu = nn.ReLU()                  # Activation function
+    # Load the saved model
+    with open('job_model.pkl', 'rb') as f:
+        model = pickle.load(f)
+    #print(model.forward(torch.tensor([6,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,0.714603305,0.480564217,0.470876568,0.039610646,0.742567413,0.086926736,0.339776151,0.091158037,0.230518077,0.208745599])))
 
-    def forward(self, x):
-        x = self.relu(self.fc1(x))
-        x = self.relu(self.fc2(x))
-        x = self.fc3(x)  # No activation function here, as we'll use CrossEntropyLoss
-        return x
+    target_names = ['AI ML Specialist', 'API Specialist', 'Application Support Engineer',
+    'Business Analyst', 'Customer Service Executive',
+    'Cyber Security Specialist', 'Database Administrator', 'Graphics Designer',
+    'Hardware Engineer', 'Helpdesk Engineer', 'Information Security Specialist',
+    'Networking Engineer', 'Project Manager', 'Software Developer',
+    'Software tester', 'Technical Writer']
 
-# Load the saved model
-with open('job_model.pkl', 'rb') as f:
-    model = pickle.load(f)
-#print(model.forward(torch.tensor([6,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,0.714603305,0.480564217,0.470876568,0.039610646,0.742567413,0.086926736,0.339776151,0.091158037,0.230518077,0.208745599])))
-
-target_names = ['AI ML Specialist', 'API Specialist', 'Application Support Engineer',
- 'Business Analyst', 'Customer Service Executive',
- 'Cyber Security Specialist', 'Database Administrator', 'Graphics Designer',
- 'Hardware Engineer', 'Helpdesk Engineer', 'Information Security Specialist',
- 'Networking Engineer', 'Project Manager', 'Software Developer',
- 'Software tester', 'Technical Writer']
-
-input_list = ['Database Fundamentals','Computer Architecture','Distributed Computing Systems','Cyber Security',
-              'Networking','Software Development','Programming Skills','Project Management','Computer Forensics Fundamentals',
-              'Technical Communication','AI ML','Software Engineering','Business Analysis','Communication skills','Data Science',
-              'Troubleshooting skills','Graphics Designing','Openness','Conscientousness','Extraversion','Agreeableness',
-              'Emotional_Range','Conversation','Openness to Change','Hedonism','Self-enhancement','Self-transcendence','Role']
+    input_list = ['Database Fundamentals','Computer Architecture','Distributed Computing Systems','Cyber Security',
+                'Networking','Software Development','Programming Skills','Project Management','Computer Forensics Fundamentals',
+                'Technical Communication','AI ML','Software Engineering','Business Analysis','Communication skills','Data Science',
+                'Troubleshooting skills','Graphics Designing','Openness','Conscientousness','Extraversion','Agreeableness',
+                'Emotional_Range','Conversation','Openness to Change','Hedonism','Self-enhancement','Self-transcendence','Role']
 
 
-# Set up the Streamlit page
-st.markdown("""
-    <style>
-    .main {
-        background-color: #f8f9fa;
-    }
-    .sidebar .sidebar-content {
-        background-color: #e9ecef;
-    }
-    .stSlider {
-        color: #0d6efd;
-    }
-    .st-b7 {
-        color: #212529;
-    }
-    .st-bb {
-        background-color: #ffffff;
-    }
-    .job-card {
-        border-radius: 10px;
-        padding: 20px;
-        margin: 10px 0;
-        background-color: #ffffff;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        border-left: 5px solid #0d6efd;
-    }
-    .prediction-header {
-        color: #0d6efd;
-    }
-    .skill-header {
-        color: #495057;
-        font-weight: 600;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+    # Set up the Streamlit page
+    st.markdown("""
+        <style>
+        .main {
+            background-color: #f8f9fa;
+        }
+        .sidebar .sidebar-content {
+            background-color: #e9ecef;
+        }
+        .stSlider {
+            color: #0d6efd;
+        }
+        .st-b7 {
+            color: #212529;
+        }
+        .st-bb {
+            background-color: #ffffff;
+        }
+        .job-card {
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-left: 5px solid #0d6efd;
+        }
+        .prediction-header {
+            color: #0d6efd;
+        }
+        .skill-header {
+            color: #495057;
+            font-weight: 600;
+        }
+        </style>
+        """, unsafe_allow_html=True)
 
-st.title('Computer Science Job Predictor')
-st.write('This app recommends a CS job based on your computer skills and personality.')
+    st.title('Computer Science Job Predictor')
+    st.write('This app recommends a CS job based on your computer skills and personality.')
 
 
-# Create input sliders for the features
-st.sidebar.header('Computer Science Skills')
+    # Create input sliders for the features
+    st.sidebar.header('Computer Science Skills')
 
-def user_input_features():
-    thing = []
-    data = {}
+    def user_input_features():
+        thing = []
+        data = {}
 
-    for i in range(len(input_list) - 1):
-        if i == 17:
-            st.sidebar.header('Personality Scores')
-        if i < 17:
-            thing.append(st.sidebar.select_slider(input_list[i], options=[0,1,2,3,4,5,6], value=3))
-        else:
-            thing.append(st.sidebar.slider(input_list[i], 0.0, 1.0, 0.5))
-        data[input_list[i]] = thing[i]
+        for i in range(len(input_list) - 1):
+            if i == 17:
+                st.sidebar.header('Personality Scores')
+            if i < 17:
+                thing.append(st.sidebar.select_slider(input_list[i], options=[0,1,2,3,4,5,6], value=3))
+            else:
+                thing.append(st.sidebar.slider(input_list[i], 0.0, 1.0, 0.5))
+            data[input_list[i]] = thing[i]
 
-    features = pd.DataFrame(data, index=[0])
-    return features
+        features = pd.DataFrame(data, index=[0])
+        return features
 
-# Display the user input
-user_input = user_input_features()
-st.subheader('User Input:')
-st.write(user_input)
-st.markdown("Based on your inputs, here are the results:")
+    # Display the user input
+    user_input = user_input_features()
+    st.subheader('User Input:')
+    st.write(user_input)
+    st.markdown("Based on your inputs, here are the results:")
 
-# Make prediction
-#with st.spinner('Analyzing your profile...'):
-prediction_proba = model.forward(torch.tensor(user_input.values.astype(np.float32)))
-prediction_highval = torch.argmax(prediction_proba)
-prediction = target_names[prediction_highval]
+    # Make prediction
+    #with st.spinner('Analyzing your profile...'):
+    prediction_proba = model.forward(torch.tensor(user_input.values.astype(np.float32)))
+    prediction_highval = torch.argmax(prediction_proba)
+    prediction = target_names[prediction_highval]
 
-# Display the prediction
-# LINE 128
-st.subheader('Prediction:')
-st.write(f'Your future job: **{prediction}**')
+    # Display the prediction
+    # LINE 128
+    st.subheader('Prediction:')
+    st.write(f'Your future job: **{prediction}**')
 
-# Display prediction probabilities
-st.subheader('Prediction Probability:')
-prob_df = pd.DataFrame(prediction_proba.detach().numpy(), columns=target_names)
-st.write(prob_df)
+    # Display prediction probabilities
+    st.subheader('Prediction Probability:')
+    prob_df = pd.DataFrame(prediction_proba.detach().numpy(), columns=target_names)
+    st.write(prob_df)
 
-# Add a sample image based on prediction
-#st.subheader('Iris Type:')
-#if prediction[0] == 0:
-#    st.write('Iris Setosa')
-#    st.image('https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Kosaciec_szczecinkowaty_Iris_setosa.jpg/440px-Kosaciec_szczecinkowaty_Iris_setosa.jpg', width=300)
-#elif prediction[0] == 1:
-#    st.write('Iris Versicolor')
-#    st.image('https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Iris_versicolor_3.jpg/440px-Iris_versicolor_3.jpg', width=300)
-#else:
-#    st.write('Iris Virginica')
-#    st.image('https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Iris_virginica.jpg/440px-Iris_virginica.jpg', width=300)
+    # Add a sample image based on prediction
+    #st.subheader('Iris Type:')
+    #if prediction[0] == 0:
+    #    st.write('Iris Setosa')
+    #    st.image('https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Kosaciec_szczecinkowaty_Iris_setosa.jpg/440px-Kosaciec_szczecinkowaty_Iris_setosa.jpg', width=300)
+    #elif prediction[0] == 1:
+    #    st.write('Iris Versicolor')
+    #    st.image('https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Iris_versicolor_3.jpg/440px-Iris_versicolor_3.jpg', width=300)
+    #else:
+    #    st.write('Iris Virginica')
+    #    st.image('https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Iris_virginica.jpg/440px-Iris_virginica.jpg', width=300)
 
-# ----- SECTION 3: RUN THE STREAMLIT APP IN COLAB -----
-import os
+    # ----- SECTION 3: RUN THE STREAMLIT APP IN COLAB -----
+    import os
 
-#pip3 install -q streamlit
-#!npm install localtunnel
-#!wget -q -O - ipv4.icanhazip.com # USE THIS OUTPUT (ex., '34.133.84.111') as the Tunnel Password if you are asked on the next page
-#!streamlit run streamlit_app/app.py & npx localtunnel --port 8501
+    #pip3 install -q streamlit
+    #!npm install localtunnel
+    #!wget -q -O - ipv4.icanhazip.com # USE THIS OUTPUT (ex., '34.133.84.111') as the Tunnel Password if you are asked on the next page
+    #!streamlit run streamlit_app/app.py & npx localtunnel --port 8501
