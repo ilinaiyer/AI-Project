@@ -101,18 +101,15 @@ class MultiApp:
         # app = st.sidebar(
         with st.sidebar:        
             app = option_menu(
-                menu_title='Pondering ',
+                menu_title='Menu',
                 options=['Manual'],
                 icons=['house-fill'],
                 menu_icon='chat-text-fill',
                 default_index=1,
                 )
 
-        
-        if app == "Home":
-            home.app()
-             
-          
+        if app == "Manual":
+            manual.app()
              
     run()            
 
