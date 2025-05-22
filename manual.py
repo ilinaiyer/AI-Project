@@ -74,7 +74,7 @@ def app():
     with col1:
         st.header('Computer Science Skills')
 
-        def user_input_features():
+        def user_input_features1():
             thing = []
             data = {}
 
@@ -83,15 +83,15 @@ def app():
                 data[input_list[i]] = thing[i]
 
             features = pd.DataFrame(data, index=[0])
-            return features
+            return features,data
         # Display the user input
-        user_input1 = user_input_features()
+        user_input1,data1 = user_input_features1()
         st.subheader('User Input:')
         st.write(user_input1)
     with col2:
         st.header('Personality Scores')
 
-        def user_input_features():
+        def user_input_features2():
             thing = []
             data = {}
 
@@ -100,13 +100,14 @@ def app():
                 data[input_list[i]] = thing[i-17]
 
             features = pd.DataFrame(data, index=[0])
-            return features
+            return features,data
         # Display the user input
-        user_input2 = user_input_features()
+        user_input2,data2 = user_input_feature2()
         st.subheader('User Input:')
         st.write(user_input2)
     with col3:
-        user_input = user_input1 + user_input1
+        data=data1+data2
+        user_input = pd.DataFrame(data, index=[0])
         # Make prediction
         #with st.spinner('Analyzing your profile...'):
         prediction_proba = model.forward(torch.tensor(user_input.values.astype(np.float32)))
