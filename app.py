@@ -105,7 +105,7 @@ class MultiApp:
                 options=['Manual'],
                 icons=['house-fill'],
                 menu_icon='chat-text-fill',
-                default_index=1,
+                default_index=0,
                 )
 
         if app == "Manual":
