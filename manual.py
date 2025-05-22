@@ -102,7 +102,7 @@ def app():
             features = pd.DataFrame(data, index=[0])
             return features,data
         # Display the user input
-        user_input2,data2 = user_input_feature2()
+        user_input2,data2 = user_input_features2()
         st.subheader('User Input:')
         st.write(user_input2)
     with col3:
