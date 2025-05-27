@@ -115,7 +115,7 @@ def app():
     def reset_results():
         st.session_state.personality_scores = None
         st.session_state.responses = {}
-        st.experimental_rerun()
+        st.rerun()
 
     # Display reset button if results exist
     if st.session_state.personality_scores:
@@ -172,7 +172,7 @@ def app():
         # Store in session state
         st.session_state.personality_scores = trait_scores
         st.success("Assessment complete! Results are now saved.")
-        st.experimental_rerun()
+        st.rerun()
 
     # Display results if available
     if st.session_state.personality_scores:
