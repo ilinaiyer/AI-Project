@@ -6,7 +6,6 @@ import os
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import numpy as np
 
 def app():
     st.title('Computer Science Job Predictor')
@@ -52,6 +51,9 @@ def app():
         .question-number {
             font-weight: bold;
             color: #0d6efd;
+        }
+        .reset-btn {
+            margin-top: 20px;
         }
         </style>
         """, unsafe_allow_html=True)
@@ -103,11 +105,22 @@ def app():
         ]
     }
     
+    # Initialize session state for persistent storage
     if 'personality_scores' not in st.session_state:
         st.session_state.personality_scores = None
-    responses = {}
+    if 'responses' not in st.session_state:
+        st.session_state.responses = {}
 
-    trait_responses = {}
+    # Reset function
+    def reset_results():
+        st.session_state.personality_scores = None
+        st.session_state.responses = {}
+        st.experimental_rerun()
+
+    # Display reset button if results exist
+    if st.session_state.personality_scores:
+        st.button("Reset Assessment Results", on_click=reset_results, key="reset_btn", 
+                 help="Click to clear all assessment results", use_container_width=True)
 
     # Create 2 columns for questions
     col1, col2 = st.columns(2)
@@ -125,54 +138,60 @@ def app():
                                f'<span class="question-number">Q{question_count}.</span> {question}'
                                f'</div>', unsafe_allow_html=True)
                     
-                    # Get response (1-5 scale)
+                    # Get response (1-5 scale), using stored value if exists
+                    default_value = st.session_state.responses.get(f"Q{question_count}", 3)
                     response = st.select_slider(
                         f"Response to Q{question_count}",
                         options=[1, 2, 3, 4, 5],
-                        value=3,
-                        key=f"Q{question_count}",
+                        value=default_value,
+                        key=f"Q{question_count}_slider",
                         label_visibility="collapsed"
                     )
                     
-                    responses[f"Q{question_count}"] = response
-                    if trait not in trait_responses:
-                        trait_responses[trait] = []
-                    trait_responses[trait].append(response)
+                    # Store response in session state
+                    st.session_state.responses[f"Q{question_count}"] = response
 
     if st.button("Submit Personality Assessment", use_container_width=True):
         # Calculate normalized scores (0-1 range)
         trait_scores = {}
+        trait_responses = {}
+        
+        # Organize responses by trait
+        question_count = 0
+        for trait, trait_questions in questions.items():
+            trait_responses[trait] = []
+            for _ in trait_questions:
+                question_count += 1
+                trait_responses[trait].append(st.session_state.responses[f"Q{question_count}"])
+        
+        # Calculate scores
         for trait, values in trait_responses.items():
-            # Convert from 1-5 scale to 0-1 scale
             normalized_values = [(x - 1) / 4 for x in values]
             trait_scores[trait] = np.mean(normalized_values)
         
-        # Display results
-
+        # Store in session state
         st.session_state.personality_scores = trait_scores
-        st.success("Assessment complete!")
+        st.success("Assessment complete! Results are now saved.")
+        st.experimental_rerun()
+
+    # Display results if available
+    if st.session_state.personality_scores:
         st.subheader("Your Personality Profile")
         
-        if st.session_state.personality_scores:
-            st.subheader("Your Results")
-            for trait, score in st.session_state.personality_scores.items():
-                st.write(f"{trait}: {score:.2f}")
-                st.progress(score)
-                
         # Display in 3 columns with progress bars
         cols = st.columns(3)
-        traits = sorted(trait_scores.keys())
+        traits = sorted(st.session_state.personality_scores.keys())
         
         for i, trait in enumerate(traits):
             with cols[i % 3]:
-                score = trait_scores[trait]
+                score = st.session_state.personality_scores[trait]
                 st.markdown(f"**{trait}**")
-                # Display progress bar with percentage
                 st.progress(score, text=f"{score:.0%}")
-                # Interpretation text
                 st.caption(get_interpretation(trait, score))
         
-        return trait_scores
+        # Add another reset button at bottom
+        st.button("Reset Assessment Results", on_click=reset_results, key="reset_btn_bottom", 
+                 help="Click to clear all assessment results", use_container_width=True)
 
 def get_interpretation(trait, score):
     if score < 0.3:
