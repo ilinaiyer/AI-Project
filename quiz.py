@@ -47,51 +47,52 @@ def app():
         }
         </style>
         """, unsafe_allow_html=True)
-    questions = [
-        # Openness
-        ("I have a vivid imagination", "Openness"),
-        ("I enjoy trying new things", "Openness"),
-        
-        # Conscientiousness
-        ("I pay attention to details", "Conscientiousness"),
-        ("I get chores done right away", "Conscientiousness"),
-        
-        # Extraversion
-        ("I feel comfortable around people", "Extraversion"),
-        ("I am the life of the party", "Extraversion"),
-        
-        # Agreeableness
-        ("I sympathize with others' feelings", "Agreeableness"),
-        ("I make people feel at ease", "Agreeableness"),
-        
-        # Emotional Range
-        ("I get stressed out easily", "Emotional Range"),
-        ("I worry about things", "Emotional Range"),
-        
-        # Conversation
-        ("I enjoy discussing ideas", "Conversation"),
-        ("I prefer meaningful conversations", "Conversation"),
-        
-        # Openness to Change
-        ("I prefer variety over routine", "Openness to Change"),
-        ("I adapt easily to change", "Openness to Change"),
-        
-        # Hedonism
-        ("I seek pleasurable activities", "Hedonism"),
-        ("I prioritize my own enjoyment", "Hedonism"),
-        
-        # Self-enhancement
-        ("I strive for personal success", "Self-enhancement"),
-        ("I enjoy being in charge", "Self-enhancement"),
-        
-        # Self-transcendence
-        ("I care about all humanity", "Self-transcendence"),
-        ("I help others selflessly", "Self-transcendence"),
-        
-        # Role
-        ("I enjoy leadership roles", "Role"),
-        ("I adapt my role as needed", "Role")
-    ]
+    questions = {
+        "1": [
+            "I have a vivid imagination",
+            "I enjoy trying new things"
+        ],
+        "2": [
+            "I pay attention to details",
+            "I get chores done right away"
+        ],
+        "3": [
+            "I feel comfortable around people",
+            "I am the life of the party"
+        ],
+        "4": [
+            "I sympathize with others' feelings",
+            "I make people feel at ease"
+        ],
+        "5": [
+            "I get stressed out easily",
+            "I worry about things"
+        ],
+        "6": [
+            "I enjoy discussing ideas",
+            "I prefer meaningful conversations"
+        ],
+        "7": [
+            "I prefer variety over routine",
+            "I adapt easily to change"
+        ],
+        "8": [
+            "I seek pleasurable activities",
+            "I prioritize my own enjoyment"
+        ],
+        "9": [
+            "I strive for personal success",
+            "I enjoy being in charge"
+        ],
+        "10": [
+            "I care about all humanity",
+            "I help others selflessly"
+        ],
+        "11": [
+            "I enjoy leadership roles",
+            "I adapt my role as needed"
+        ]
+    }
     
     responses = {}
     for trait in questions:
@@ -109,17 +110,17 @@ def app():
         st.write("---")
     
     if st.button("Submit Personality Assessment"):
-        
+        # Calculate scores
         trait_scores = {}
         for trait in questions:
             trait_responses = [v for k, v in responses.items() if k.startswith(trait)]
             trait_scores[trait] = np.mean(trait_responses)
         
-        
+        # Display results
         st.success("Assessment complete!")
         st.subheader("Your Personality Scores")
         
-        
+        # Display in 3 columns
         cols = st.columns(3)
         for i, (trait, score) in enumerate(trait_scores.items()):
             with cols[i % 3]:
