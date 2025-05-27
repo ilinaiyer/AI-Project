@@ -9,6 +9,8 @@ import torch.optim as optim
 import numpy as np
 
 def app():
+    st.title('Computer Science Job Predictor')
+    st.write('This app recommends a CS job based on your computer skills and personality.')
     # Set up the Streamlit page
     st.markdown("""
         <style>
@@ -124,6 +126,3 @@ def app():
                 st.metric(label=trait, value=f"{score:.1f}/5.0")
         
         return trait_scores
-    
-    st.title('Computer Science Job Predictor')
-    st.write('This app recommends a CS job based on your computer skills and personality.')
