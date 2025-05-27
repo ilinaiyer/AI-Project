@@ -103,7 +103,10 @@ def app():
         ]
     }
     
+    if 'personality_scores' not in st.session_state:
+        st.session_state.personality_scores = None
     responses = {}
+
     trait_responses = {}
 
     # Create 2 columns for questions
@@ -145,9 +148,17 @@ def app():
             trait_scores[trait] = np.mean(normalized_values)
         
         # Display results
+
+        st.session_state.personality_scores = trait_scores
         st.success("Assessment complete!")
         st.subheader("Your Personality Profile")
         
+        if st.session_state.personality_scores:
+            st.subheader("Your Results")
+            for trait, score in st.session_state.personality_scores.items():
+                st.write(f"{trait}: {score:.2f}")
+                st.progress(score)
+                
         # Display in 3 columns with progress bars
         cols = st.columns(3)
         traits = sorted(trait_scores.keys())
