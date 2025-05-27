@@ -48,47 +48,47 @@ def app():
         </style>
         """, unsafe_allow_html=True)
     questions = {
-        "Openness": [
+        "1": [
             "I have a vivid imagination",
             "I enjoy trying new things"
         ],
-        "Conscientiousness": [
+        "2": [
             "I pay attention to details",
             "I get chores done right away"
         ],
-        "Extraversion": [
+        "3": [
             "I feel comfortable around people",
             "I am the life of the party"
         ],
-        "Agreeableness": [
+        "4": [
             "I sympathize with others' feelings",
             "I make people feel at ease"
         ],
-        "Emotional Range": [
+        "5": [
             "I get stressed out easily",
             "I worry about things"
         ],
-        "Conversation": [
+        "6": [
             "I enjoy discussing ideas",
             "I prefer meaningful conversations"
         ],
-        "Openness to Change": [
+        "7": [
             "I prefer variety over routine",
             "I adapt easily to change"
         ],
-        "Hedonism": [
+        "8": [
             "I seek pleasurable activities",
             "I prioritize my own enjoyment"
         ],
-        "Self-enhancement": [
+        "9": [
             "I strive for personal success",
             "I enjoy being in charge"
         ],
-        "Self-transcendence": [
+        "10": [
             "I care about all humanity",
             "I help others selflessly"
         ],
-        "Role": [
+        "11": [
             "I enjoy leadership roles",
             "I adapt my role as needed"
         ]
