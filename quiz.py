@@ -11,6 +11,7 @@ import numpy as np
 def app():
     st.title('Computer Science Job Predictor')
     st.write('This app recommends a CS job based on your computer skills and personality.')
+    st.write('Rate how true these answers apply on a scale of 1-5 - 1 being strongly disagree and 5 being strongly agree')
     # Set up the Streamlit page
     st.markdown("""
         <style>
