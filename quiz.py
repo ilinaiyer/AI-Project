@@ -11,6 +11,7 @@ import numpy as np
 def app():
     st.title('Computer Science Job Predictor')
     st.write('Rate how true these answers apply on a scale of 1-5 - (1 being strongly disagree and 5 being strongly agree). These values can be used on the manual page')
+    
     # Set up the Streamlit page
     st.markdown("""
         <style>
@@ -44,50 +45,59 @@ def app():
             color: #495057;
             font-weight: 600;
         }
+        .question-column {
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+        .question-number {
+            font-weight: bold;
+            color: #0d6efd;
+        }
         </style>
         """, unsafe_allow_html=True)
+
     questions = {
-        "1": [
+        "Openness": [
             "I have a vivid imagination",
             "I enjoy trying new things"
         ],
-        "2": [
+        "Conscientiousness": [
             "I pay attention to details",
             "I get chores done right away"
         ],
-        "3": [
+        "Extraversion": [
             "I feel comfortable around people",
             "I am the life of the party"
         ],
-        "4": [
+        "Agreeableness": [
             "I sympathize with others' feelings",
             "I make people feel at ease"
         ],
-        "5": [
+        "Emotional Range": [
             "I get stressed out easily",
             "I worry about things"
         ],
-        "6": [
+        "Conversation": [
             "I enjoy discussing ideas",
             "I prefer meaningful conversations"
         ],
-        "7": [
+        "Openness to Change": [
             "I prefer variety over routine",
             "I adapt easily to change"
         ],
-        "8": [
+        "Hedonism": [
             "I seek pleasurable activities",
             "I prioritize my own enjoyment"
         ],
-        "9": [
+        "Self-enhancement": [
             "I strive for personal success",
             "I enjoy being in charge"
         ],
-        "10": [
+        "Self-transcendence": [
             "I care about all humanity",
             "I help others selflessly"
         ],
-        "11": [
+        "Role": [
             "I enjoy leadership roles",
             "I adapt my role as needed"
         ]
@@ -98,30 +108,33 @@ def app():
 
     # Create 2 columns for questions
     col1, col2 = st.columns(2)
+    question_count = 0
 
     # Display questions in two columns
-    for i, (question, trait) in enumerate(questions, 1):
-        current_col = col1 if i % 2 == 1 else col2
-        
-        with current_col:
-            with st.container():
-                st.markdown(f'<div class="question-column">'
-                           f'<span class="question-number">Q{i}.</span> {question}'
-                           f'</div>', unsafe_allow_html=True)
-                
-                # Get response (1-5 scale)
-                response = st.select_slider(
-                    f"Response to Q{i}",
-                    options=[1, 2, 3, 4, 5],
-                    value=3,
-                    key=f"Q{i}",
-                    label_visibility="collapsed"
-                )
-                
-                responses[f"Q{i}"] = response
-                if trait not in trait_responses:
-                    trait_responses[trait] = []
-                trait_responses[trait].append(response)
+    for trait, trait_questions in questions.items():
+        for i, question in enumerate(trait_questions):
+            question_count += 1
+            current_col = col1 if question_count % 2 == 1 else col2
+            
+            with current_col:
+                with st.container():
+                    st.markdown(f'<div class="question-column">'
+                               f'<span class="question-number">Q{question_count}.</span> {question}'
+                               f'</div>', unsafe_allow_html=True)
+                    
+                    # Get response (1-5 scale)
+                    response = st.select_slider(
+                        f"Response to Q{question_count}",
+                        options=[1, 2, 3, 4, 5],
+                        value=3,
+                        key=f"Q{question_count}",
+                        label_visibility="collapsed"
+                    )
+                    
+                    responses[f"Q{question_count}"] = response
+                    if trait not in trait_responses:
+                        trait_responses[trait] = []
+                    trait_responses[trait].append(response)
 
     if st.button("Submit Personality Assessment", use_container_width=True):
         # Calculate normalized scores (0-1 range)
@@ -151,7 +164,6 @@ def app():
         return trait_scores
 
 def get_interpretation(trait, score):
-    """Helper function to provide interpretation of normalized scores (0-1)"""
     if score < 0.3:
         level = "Low"
     elif score < 0.7:
