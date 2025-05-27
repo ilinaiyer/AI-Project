@@ -94,35 +94,76 @@ def app():
     }
     
     responses = {}
-    for trait in questions:
-        st.markdown(f"**{trait}**")
-        cols = st.columns(2)
-        for i, question in enumerate(questions[trait]):
-            with cols[i]:
-                key = f"{trait}_{i}"
-                responses[key] = st.select_slider(
-                    question,
+    trait_responses = {}
+
+    # Create 2 columns for questions
+    col1, col2 = st.columns(2)
+
+    # Display questions in two columns
+    for i, (question, trait) in enumerate(questions, 1):
+        current_col = col1 if i % 2 == 1 else col2
+        
+        with current_col:
+            with st.container():
+                st.markdown(f'<div class="question-column">'
+                           f'<span class="question-number">Q{i}.</span> {question}'
+                           f'</div>', unsafe_allow_html=True)
+                
+                # Get response (1-5 scale)
+                response = st.select_slider(
+                    f"Response to Q{i}",
                     options=[1, 2, 3, 4, 5],
                     value=3,
-                    key=key
+                    key=f"Q{i}",
+                    label_visibility="collapsed"
                 )
-        st.write("---")
-    
-    if st.button("Submit Personality Assessment"):
-        # Calculate scores
+                
+                responses[f"Q{i}"] = response
+                if trait not in trait_responses:
+                    trait_responses[trait] = []
+                trait_responses[trait].append(response)
+
+    if st.button("Submit Personality Assessment", use_container_width=True):
+        # Calculate normalized scores (0-1 range)
         trait_scores = {}
-        for trait in questions:
-            trait_responses = [v for k, v in responses.items() if k.startswith(trait)]
-            trait_scores[trait] = np.mean(trait_responses)
+        for trait, values in trait_responses.items():
+            # Convert from 1-5 scale to 0-1 scale
+            normalized_values = [(x - 1) / 4 for x in values]
+            trait_scores[trait] = np.mean(normalized_values)
         
         # Display results
         st.success("Assessment complete!")
-        st.subheader("Your Personality Scores")
+        st.subheader("Your Personality Profile")
         
-        # Display in 3 columns
+        # Display in 3 columns with progress bars
         cols = st.columns(3)
-        for i, (trait, score) in enumerate(trait_scores.items()):
+        traits = sorted(trait_scores.keys())
+        
+        for i, trait in enumerate(traits):
             with cols[i % 3]:
-                st.metric(label=trait, value=f"{score:.1f}/5.0")
+                score = trait_scores[trait]
+                st.markdown(f"**{trait}**")
+                # Display progress bar with percentage
+                st.progress(score, text=f"{score:.0%}")
+                # Interpretation text
+                st.caption(get_interpretation(trait, score))
         
         return trait_scores
+
+def get_interpretation(trait, score):
+    """Helper function to provide interpretation of normalized scores (0-1)"""
+    if score < 0.3:
+        level = "Low"
+    elif score < 0.7:
+        level = "Moderate"
+    else:
+        level = "High"
+    
+    if trait == "Emotional Range":
+        return f"{level} emotional reactivity"
+    elif trait == "Openness to Change":
+        return f"{level} preference for change"
+    elif trait == "Role":
+        return f"{level} role flexibility"
+    else:
+        return f"{level} {trait.lower()}"
