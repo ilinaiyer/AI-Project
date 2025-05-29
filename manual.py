@@ -127,6 +127,7 @@ def app():
         for i in range(3):
             target_names.remove(prediction)
             prediction_proba = torch.cat((prediction_proba[:prediction_highval], prediction_proba[prediction_highval+1:]))
+            prob_df = pd.DataFrame(prediction_proba.detach().numpy(), columns=target_names)
             prediction_highval = torch.argmax(prediction_proba)
             prediction = target_names[prediction_highval]
             st.write(f'- {prediction}')
