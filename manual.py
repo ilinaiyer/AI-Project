@@ -70,7 +70,7 @@ def app():
 
 
     # Create input sliders for the features
-    col1, col2, col3 = st.columns([3,3,2])
+    col1, col2, col3 = st.columns([2,2,3])
     with col1:
         st.header('Computer Science Skills')
 
