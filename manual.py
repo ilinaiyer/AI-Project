@@ -125,7 +125,7 @@ def app():
         st.write(prob_df)
         st.subheader('Other recommendations:')
         for i in range(3):
-            if prediction_highval == len(target_Names):
+            if prediction_highval == len(target_names):
                 target_names = target_names[:prediction_highval]
             else:
                 target_names = target_names[:prediction_highval] + target_names[prediction_highval+1]
