@@ -130,7 +130,7 @@ def app():
                 target_names = target_names[:prediction_highval]
             else:
                 target_names = target_names[:prediction_highval] + target_names[prediction_highval+1:]
-            prediction_proba = torch.cat((prediction_proba[:prediction_highval], prediction_proba[prediction_highval+1:]))
+            prediction_proba[0] = torch.cat((prediction_proba[0][:prediction_highval], prediction_proba[0][prediction_highval+1:]))
             #prob_df = pd.DataFrame(prediction_proba.detach().numpy(), columns=target_names)
             prediction_highval = torch.argmax(prediction_proba)
             prediction = target_names[prediction_highval]
