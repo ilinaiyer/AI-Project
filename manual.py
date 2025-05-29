@@ -130,3 +130,15 @@ def app():
             prediction_highval = torch.argmax(prediction_proba)
             prediction = target_names[prediction_highval]
             st.write(f'- {prediction}')
+        target_names = ['AI ML Specialist', 'API Specialist', 'Application Support Engineer',
+    'Business Analyst', 'Customer Service Executive',
+    'Cyber Security Specialist', 'Database Administrator', 'Graphics Designer',
+    'Hardware Engineer', 'Helpdesk Engineer', 'Information Security Specialist',
+    'Networking Engineer', 'Project Manager', 'Software Developer',
+    'Software tester', 'Technical Writer']
+
+        input_list = ['Database Fundamentals','Computer Architecture','Distributed Computing Systems','Cyber Security',
+                'Networking','Software Development','Programming Skills','Project Management','Computer Forensics Fundamentals',
+                'Technical Communication','AI ML','Software Engineering','Business Analysis','Communication skills','Data Science',
+                'Troubleshooting skills','Graphics Designing','Openness','Conscientousness','Extraversion','Agreeableness',
+                'Emotional_Range','Conversation','Openness to Change','Hedonism','Self-enhancement','Self-transcendence','Role']
