@@ -123,23 +123,23 @@ def app():
         st.subheader('Prediction Probability:')
         prob_df = pd.DataFrame(prediction_proba.detach().numpy(), columns=target_names)
         st.write(prob_df)
-        st.subheader('Other recommendations:')
-        for i in range(3):
-            target_names.remove(prediction)
-            prediction_proba = torch.cat((prediction_proba[:prediction_highval], prediction_proba[prediction_highval+1:]))
-            prob_df = pd.DataFrame(prediction_proba.detach().numpy(), columns=target_names)
-            prediction_highval = torch.argmax(prediction_proba)
-            prediction = target_names[prediction_highval]
-            st.write(f'- {prediction}')
-        target_names = ['AI ML Specialist', 'API Specialist', 'Application Support Engineer',
-    'Business Analyst', 'Customer Service Executive',
-    'Cyber Security Specialist', 'Database Administrator', 'Graphics Designer',
-    'Hardware Engineer', 'Helpdesk Engineer', 'Information Security Specialist',
-    'Networking Engineer', 'Project Manager', 'Software Developer',
-    'Software tester', 'Technical Writer']
+        #st.subheader('Other recommendations:')
+        #for i in range(3):
+        #    target_names.remove(prediction)
+        #    prediction_proba = torch.cat((prediction_proba[:prediction_highval], prediction_proba[prediction_highval+1:]))
+        #    prob_df = pd.DataFrame(prediction_proba.detach().numpy(), columns=target_names)
+        #    prediction_highval = torch.argmax(prediction_proba)
+        #    prediction = target_names[prediction_highval]
+        #    st.write(f'- {prediction}')
+        #target_names = ['AI ML Specialist', 'API Specialist', 'Application Support Engineer',
+        #'Business Analyst', 'Customer Service Executive',
+        #'Cyber Security Specialist', 'Database Administrator', 'Graphics Designer',
+        #'Hardware Engineer', 'Helpdesk Engineer', 'Information Security Specialist',
+        #'Networking Engineer', 'Project Manager', 'Software Developer',
+        #'Software tester', 'Technical Writer']
 
-        input_list = ['Database Fundamentals','Computer Architecture','Distributed Computing Systems','Cyber Security',
-                'Networking','Software Development','Programming Skills','Project Management','Computer Forensics Fundamentals',
-                'Technical Communication','AI ML','Software Engineering','Business Analysis','Communication skills','Data Science',
-                'Troubleshooting skills','Graphics Designing','Openness','Conscientousness','Extraversion','Agreeableness',
-                'Emotional_Range','Conversation','Openness to Change','Hedonism','Self-enhancement','Self-transcendence','Role']
+        #input_list = ['Database Fundamentals','Computer Architecture','Distributed Computing Systems','Cyber Security',
+        #        'Networking','Software Development','Programming Skills','Project Management','Computer Forensics Fundamentals',
+        #        'Technical Communication','AI ML','Software Engineering','Business Analysis','Communication skills','Data Science',
+        #        'Troubleshooting skills','Graphics Designing','Openness','Conscientousness','Extraversion','Agreeableness',
+        #        'Emotional_Range','Conversation','Openness to Change','Hedonism','Self-enhancement','Self-transcendence','Role']
